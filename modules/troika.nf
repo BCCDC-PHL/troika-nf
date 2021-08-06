@@ -18,6 +18,10 @@ process prepare_input_tsv {
 
 process troika {
 
+  tag { "cpus:" + task.cpus + " jobs:" + params.jobs + " cpus/job:" + cpus_per_job }
+
+  cpus { params.total_cpus }
+
   publishDir "${params.outdir}", mode: 'copy', pattern: "output/*", saveAs: { it.split("/")[1] }
   publishDir "${params.outdir}", mode: 'copy', pattern: "*.{tab,toml}"
   publishDir "${params.outdir}", mode: 'copy', pattern: "troika.log"
@@ -35,14 +39,16 @@ process troika {
   script:
     resistance_only = params.resistance_only ? "--resistance_only" : ""
     detect_species = params.detect_species ? "--detect_species" : ""
+    cpus_per_job = (int) (task.cpus / params.jobs)
     """
     mkdir output
     troika \
       --input_file ${input_file} \
       --jobs ${params.jobs} \
-      --kraken_threads ${task.cpus} \
+      --kraken_threads ${cpus_per_job} \
       --kraken_db ${params.kraken_db} \
-      --snippy_threads ${task.cpus} \
+      --snippy_threads ${cpus_per_job} \
+      --profiler_threads ${cpus_per_job} \
       ${resistance_only} \
       ${detect_species} \
       --min_cov ${params.min_cov} \
