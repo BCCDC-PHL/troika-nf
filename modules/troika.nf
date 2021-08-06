@@ -21,6 +21,8 @@ process troika {
   publishDir "${params.outdir}", mode: 'copy', pattern: "output/*", saveAs: { it.split("/")[1] }
   publishDir "${params.outdir}", mode: 'copy', pattern: "*.{tab,toml}"
   publishDir "${params.outdir}", mode: 'copy', pattern: "troika.log"
+  publishDir "${params.outdir}", mode: 'copy', pattern: "core.*"
+  publishDir "${params.outdir}", mode: 'copy', pattern: "index.html"
 
   input:
     tuple path(input_file), path(reads)
