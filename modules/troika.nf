@@ -31,6 +31,8 @@ process troika {
     path("output/*", type: 'dir')
     path("*.{tab,toml}")
     path("troika.log")
+    path("core.*")
+    path("index.html")
 
   script:
     resistance_only = params.resistance_only ? "--resistance_only" : ""
