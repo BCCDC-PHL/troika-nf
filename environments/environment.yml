@@ -27,5 +27,3 @@ dependencies:
   - vt=2015.11.10
   - pip:
       - git+https://github.com/BCCDC-PHL/troika.git
-      - git+https://github.com/philipwfowler/snpit.git
-  
